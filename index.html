@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TO-AND-FRO GLOBAL - Social Commerce | Shop & Live</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:-apple-system,sans-serif;display:flex;justify-content:center}
+.app{width:390px;background:#0a0a0a;min-height:100vh;position:relative;border-left:1px solid #1a1a1a;border-right:1px solid #1a1a1a;display:flex;flex-direction:column}
+.header-top{height:56px;display:flex;align-items:center;gap:10px;padding:0 12px;background:#000;border-bottom:1px solid #222;position:sticky;top:0;z-index:15}
+.logo{font-weight:900;font-size:20px}
+.live-dot{display:flex;align-items:center;gap:6px;background:#1a1a1a;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid #2a2a2a}
+.live-dot .dot{width:8px;height:8px;background:#0f0;border-radius:4px;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
+.search-bar-top{flex:1;background:#1a1a1a;border-radius:20px;padding:8px 14px;display:flex;gap:8px;align-items:center;color:#888;font-size:13px;border:1px solid #222;cursor:pointer}
+.icon-btn{width:36px;height:36px;background:#1a1a1a;border-radius:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #222;position:relative}
+.icon-btn.badge::after{content:'';position:absolute;top:2px;right:4px;width:8px;height:8px;background:#ff0040;border-radius:4px}
+.story-tray{display:flex;gap:14px;overflow-x:auto;padding:14px 12px;scrollbar-width:none;border-bottom:1px solid #111}
+.story-tray::-webkit-scrollbar{display:none}
+.story-item{flex:0 0 64px;text-align:center;cursor:pointer}
+.story-avatar{width:60px;height:60px;border-radius:30px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;position:relative;border:3px solid transparent;background:#222}
+.story-avatar.live{border-color:#ff0040;background:linear-gradient(135deg,#7928CA,#FF0080);border:3px solid #ff0040}
+.story-avatar.own{background:#ff0040;color:#fff}
+.plus-story{position:absolute;bottom:-4px;right:-2px;width:20px;height:20px;background:#0095f6;border-radius:10px;border:2px solid #0a0a0a;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+.live-badge-story{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:#ff0040;color:#fff;font-size:7px;padding:2px 6px;border-radius:8px;font-weight:800}
+.online-dot-story{position:absolute;bottom:2px;right:2px;width:12px;height:12px;background:#0f0;border-radius:6px;border:2px solid #0a0a0a}
+.story-name{font-size:10px;margin-top:6px;color:#aaa;white-space:nowrap}
+.live-now-section{padding:12px 12px;border-bottom:1px solid #111}
+.live-now-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.live-now-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
+.live-now-sub{font-size:12px;color:#666}
+.see-all{font-size:12px;color:#fff;background:#1a1a1a;padding:6px 12px;border-radius:16px;cursor:pointer;border:1px solid #222}
+.live-hscroll{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
+.live-hscroll::-webkit-scrollbar{display:none}
+.live-hcard{flex:0 0 120px;height:160px;border-radius:16px;position:relative;overflow:hidden;cursor:pointer;background:#222;display:flex;flex-direction:column;justify-content:flex-end;padding:10px}
+.live-hcard::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(transparent 30%, rgba(0,0,0,0.8))}
+.live-hcard-content{position:relative;z-index:1}
+.feed{flex:1;overflow-y:auto}
+.post{padding:14px 12px;border-bottom:1px solid #1a1a1a;background:#0a0a0a;position:relative}
+.post-head{display:flex;gap:10px;align-items:center}
+.avatar-post{width:38px;height:38px;border-radius:19px;background:#8B5CF6;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.follow-btn{margin-left:auto;background:#fff;color:#000;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer}
+.post-layout{display:flex;gap:12px;margin-top:10px}
+.post-media-col{flex:1}
+.media-wrap{width:100%;background:#000;border-radius:14px;overflow:hidden;position:relative}
+.media-wrap video{width:100%;height:auto;max-height:520px;display:block;background:#000;object-fit:contain}
+.media-wrap img{width:100%;max-height:520px;object-fit:contain;display:block}
+.engagement-col{width:56px;display:flex;flex-direction:column;align-items:center;gap:16px;padding-top:8px}
+.eng-btn{width:48px;height:48px;background:#1a1a1a;border-radius:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #222;font-size:20px;position:relative;transition:transform 0.1s}
+.eng-btn:active{transform:scale(0.9)}
+.eng-btn.liked{background:#ff2d55;border-color:#ff2d55;color:#fff}
+.eng-count{font-size:11px;font-weight:700;margin-top:4px;color:#fff;text-align:center}
+.shop-badge{position:absolute;top:-6px;right:-6px;background:#ff0040;color:#fff;font-size:8px;padding:2px 6px;border-radius:10px;font-weight:800}
+.bottom-nav{height:66px;background:#000;border-top:1px solid #222;display:flex;justify-content:space-around;align-items:center;position:sticky;bottom:0;z-index:20}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.nav-icon{font-size:20px;color:#666}.nav-icon.active{color:#fff}
+.nav-label{font-size:9px;color:#666}.nav-label.active{color:#fff}
+.plus{width:56px;height:56px;background:#ff0040;border-radius:28px;border:3px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;margin-top:-18px;box-shadow:0 4px 12px rgba(255,0,64,0.4)}
+.camera-screen{position:fixed;top:0;left:50%;transform:translateX(-50%);width:390px;height:100vh;background:#000;z-index:50;display:none;flex-direction:column}
+video#cam{width:100%;height:100%;object-fit:cover}
+video#cam.front{transform:scaleX(-1)}
+video#cam.back{transform:scaleX(1)}
+.cam-top{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:14px;z-index:2}
+.pill{background:rgba(0,0,0,0.7);padding:7px 14px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid rgba(255,255,255,0.15)}
+.cam-controls{position:absolute;bottom:92px;left:0;right:0;display:flex;justify-content:space-between;padding:0 24px;align-items:center;z-index:2}
+.gal{width:48px;height:48px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(255,255,255,0.2)}
+.rec{width:82px;height:82px;background:#ff2d55;border-radius:41px;border:4px solid #fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.rec.recording{animation:pulse 1s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,45,85,0.6)}70%{box-shadow:0 0 0 16px rgba(255,45,85,0)}100%{box-shadow:0 0 0 0 rgba(255,45,85,0)}}
+.rec-inner{width:30px;height:30px;background:#fff;border-radius:50%}
+.tabs-create{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:center;gap:32px;padding:18px;background:linear-gradient(transparent,rgba(0,0,0,0.9))}
+.tab-c{color:#666;font-weight:700;font-size:13px;letter-spacing:1px;cursor:pointer;padding-bottom:4px;border-bottom:2px solid transparent}
+.tab-c.active{color:#fff;border-bottom-color:#fff}
+.live-screen{position:fixed;top:0;left:50%;transform:translateX(-50%);width:390px;height:100vh;background:#000;z-index:60;display:none;flex-direction:column;overflow:hidden}
+.live-header{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #222;background:#000}
+.live-feed{flex:1;overflow-y:auto;scroll-snap-type:y mandatory}
+.live-item{height:100vh;scroll-snap-align:start;position:relative;background:#111;display:flex;flex-direction:column}
+.live-video-full{flex:1;background:#000;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#fff;color:#000;padding:11px 20px;border-radius:22px;font-size:13px;font-weight:600;z-index:100;display:none;max-width:340px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.4)}
+.msg-screen, .inbox-screen, .profile-screen, .user-profile-screen, .explorer-screen, .shop-screen, .share-screen, .admin-screen, .registration-screen{position:fixed;top:0;left:50%;transform:translateX(-50%);width:390px;height:100vh;background:#0a0a0a;z-index:55;display:none;flex-direction:column;overflow-y:auto}
+.search-input{margin:16px;background:#1a1a1a;border-radius:24px;padding:12px 16px;display:flex;gap:10px;align-items:center;color:#888;font-size:14px;border:1px solid #222}
+.pills-row{display:flex;gap:10px;padding:0 16px 16px}
+.pill-filter{padding:8px 18px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #2a2a2a}
+.pill-filter.active{background:#fff;color:#000;border-color:#fff}
+.pill-filter.inactive{background:#1e1e1e;color:#fff}
+.quick-calls-header{padding:16px 16px 12px;font-size:11px;letter-spacing:1.5px;color:#666;font-weight:700}
+.quick-calls-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 16px 16px}
+.quick-card{background:#0f0f0f;border-radius:16px;padding:16px 10px;text-align:center;cursor:pointer;border:1px solid #222;display:flex;flex-direction:column;align-items:center;gap:8px}
+.quick-card.voice{border-color:#10b98155}
+.quick-card.video{border-color:#3b82f655}
+.quick-card.group{border-color:#a855f755}
+.quick-icon{width:52px;height:52px;border-radius:26px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff}
+.quick-icon.voice{background:#10b981}
+.quick-icon.video{background:#3b82f6}
+.quick-icon.group{background:#a855f7}
+.quick-title{font-size:13px;font-weight:700;color:#fff}
+.quick-sub{font-size:11px;color:#888}
+.chat-row{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid #111;cursor:pointer;align-items:center;background:#000}
+.chat-avatar{width:52px;height:52px;border-radius:26px;display:flex;align-items:center;justify-content:center;font-weight:700;position:relative;color:#fff;font-size:15px}
+.online-dot{position:absolute;bottom:0;right:0;width:14px;height:14px;background:#0f0;border-radius:7px;border:2px solid #000}
+.call-btn{width:36px;height:36px;background:#1e1e1e;border-radius:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #2a2a2a;font-size:16px}
+.chat-screen, .call-screen{position:fixed;top:0;left:50%;transform:translateX(-50%);width:390px;height:100vh;background:#0a0a0a;z-index:56;display:none;flex-direction:column}
+.call-screen{background:#000;z-index:70;overflow:hidden}
+.call-top-bar{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #222;background:#000;width:100%}
+.group-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px;width:100%;flex:1;overflow-y:auto}
+.group-tile{aspect-ratio:3/4;background:#111;border-radius:12px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.group-tile.local{border:2px solid #10b981}
+.registration-screen{z-index:80;background:#000;display:flex}
+.reg-card{background:#111;border:1px solid #222;border-radius:20px;padding:20px;margin:20px}
+.input{width:100%;background:#000;border:1px solid #333;border-radius:12px;padding:12px 14px;color:#fff;outline:none;margin-top:8px;font-size:14px}
+.btn{padding:12px 18px;border-radius:12px;border:none;cursor:pointer;font-weight:700;font-size:14px;width:100%;margin-top:12px}
+.btn-white{background:#fff;color:#000}
+.btn-red{background:#ff0040;color:#fff}
+</style>
+</head>
+<body>
+<!-- REGISTRATION - ONE TIME -->
+
+<div class="registration-screen" id="regScreen" style="display:flex;background:#000;">
+<div style="flex:1;display:flex;flex-direction:column;padding:18px;overflow-y:auto">
+<div style="text-align:center;margin:16px 0 14px 0">
+<img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIbGNtcwIQAABtbnRyUkdCIFhZWiAH4gADABQACQAOAB1hY3NwTVNGVAAAAABzYXdzY3RybAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWhhbmSdkQA9QICwPUB0LIGepSKOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAABxjcHJ0AAABDAAAAAx3dHB0AAABGAAAABRyWFlaAAABLAAAABRnWFlaAAABQAAAABRiWFlaAAABVAAAABRyVFJDAAABaAAAAGBnVFJDAAABaAAAAGBiVFJDAAABaAAAAGBkZXNjAAAAAAAAAAV1UkdCAAAAAAAAAAAAAAAAdGV4dAAAAABDQzAAWFlaIAAAAAAAAPNUAAEAAAABFslYWVogAAAAAAAAb6AAADjyAAADj1hZWiAAAAAAAABilgAAt4kAABjaWFlaIAAAAAAAACSgAAAPhQAAtsRjdXJ2AAAAAAAAACoAAAB8APgBnAJ1A4MEyQZOCBIKGAxiDvQRzxT2GGocLiBDJKwpai5+M+s5sz/WRldNNlR2XBdkHWyGdVZ+jYgskjacq6eMstu+mcrH12Xkd/H5////2wBDAAkGBwgHBgkICAgKCgkLDhcPDg0NDhwUFREXIh4jIyEeICAlKjUtJScyKCAgLj8vMjc5PDw8JC1CRkE6RjU7PDn/2wBDAQoKCg4MDhsPDxs5JiAmOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTn/wAARCAIAAgADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3GiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKztV1vTdHgabUb2G2RRkl26UAaNFeUa98btFsi8em2lxeSKuQzAJGTxgZzn17V59rvxm8TahKws3jsIGA/dxqrkf8CIzQB9KSzRwpvlkWNf7zMAKwtU8a+HNLDG71e2Xau4hG8w4+i5r5X1DxRrmo5F3q19Kp/ga4Yp0x93OKx97DocfSgD6euvjH4Oi/1N9LOcA/LBIP5r/nNYlz8etFUP5Glag7j7pbYFP65r58LE9ST+NNoA9tm+Pk5/1Ojxj/fJP8jWZcfHjxJ5zeRp+kiLPyiSKQt+OJK8looA9WHx68U99P0b/vzL/wDHK2bb4+Sgj7RpCMO/lkj+ZNeIUUAfREHx30KRlWXTNRjz95sK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AooooAKKKKACiiigAprKrqVYAqRgg96dRQB8ifEXRG0LxfqNmwKp5nmISOCGAbj2GcfhXNcf3h+tfbjQxOctGjH1Kg0n2eD/AJ4x/wDfIoA+JOP7w/Wjj+8P1r7b+zwf88Y/++RR9ng/54x/98igD4k4/vD9aOP7w/Wvtv7PB/zxj/75FH2eD/njH/3yKAPkv4deIJPDniqxu1fMRk8uVckBlYbefpnP4V9aQSxzwxzRtuSRQyn1B5FH2eD/AJ4x/wDfIqQAAYHAoAWiiigAooooAKKKKACiiigAooooAKKKKAIbr/j2m/3G/lXxp4k/5D+pf9fUv/oZr7Luv+Pab/cb+VfGviT/AJD+pf8AX1L/AOhmgDMooooAKKKKAOr+F/8AyPOk/wDXVv8A0Bq+uK+R/hf/AMjzpP8A11b/ANAavrigAooooAKKKKACiiigAooooAKKKKACiiigCveXMdpay3MzBY4lLMScDivkbxx4gk8S+I7zUnOUeRli68Rg/KD+FexfHfxfHZ6Z/wAI9ayn7VOVa4AH3U6gZ7EkA/SvnwkkknqaAEooooAKKKKACuv+FugJ4h8YWlpNH5lugMsy46oCB/MiuRAycV9B/s/+HXs9Jn1udMG7GyHI52gnP5kCgD14cCloooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigCG6/wCPab/cb+VfGviX/kYNS/6+pf8A0M19lXX/AB7Tf7jfyr418S/8jBqX/X1L/wChmgDMooooAKKKKAOr+F//ACPOk/8AXVv/AEBq+uK+R/hf/wAjzpP/AF1b/wBAavrigAooooAKKKKACiiigAooooAKKKKACsLxd4itvDOiXGo3OCY0Jji3YMjY4XPbnHNa91cR2tvJPM22OMbmPoK+Xvij45k8X6miwjZYW2RAvOTnqx+oAoA5bX9WuNb1i61G5YmW4fcctnHGAM+w4rMoooAKKKKACiiigDW8MaW+ta9Zaen/AC3lCsfRerH8ga+wNJsIdL022sLcYit4ljXjGQBjJ9+K8g+AHhdo4pdfuY8bt0cBOOnQn+Y/CvbKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigDj/iV4qvvB+jR6laWc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Ac/pX1Ba6fZ2n/HtaQQ/9c0C/wAqtUAeE6F8CJmbdrOpLHGVyFtM7wfQlhiu/wBA+F/hfRJhNHY/aJgBh5mLfoTj9K7eigCKGGKBdkUaRr6IoAqWiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/2Q==" style="width:88px;height:88px;border-radius:50%;background:#fff;padding:8px;object-fit:contain;display:block;margin:0 auto;" />
+<div style="font-size:26px;font-weight:900;margin-top:10px">TO-AND-FRO</div>
+<div style="color:#888;font-size:11px;margin-top:4px">One-time registration • Supabase connected</div>
+</div>
+<div style="background:#111;border:1px solid #222;border-radius:16px;padding:16px;">
+<div style="font-weight:800;font-size:14px">Create account</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+<input class="input" id="regFirstName" placeholder="First Name *">
+<input class="input" id="regSurname" placeholder="Surname *">
+</div>
+<select class="input" id="regCountry" style="margin-top:8px"><option value="">Country *</option><option value="Afghanistan">Afghanistan</option><option value="Albania">Albania</option><option value="Algeria">Algeria</option><option value="Andorra">Andorra</option><option value="Angola">Angola</option><option value="Antigua and Barbuda">Antigua and Barbuda</option><option value="Argentina">Argentina</option><option value="Armenia">Armenia</option><option value="Australia">Australia</option><option value="Austria">Austria</option><option value="Azerbaijan">Azerbaijan</option><option value="Bahamas">Bahamas</option><option value="Bahrain">Bahrain</option><option value="Bangladesh">Bangladesh</option><option value="Barbados">Barbados</option><option value="Belarus">Belarus</option><option value="Belgium">Belgium</option><option value="Belize">Belize</option><option value="Benin">Benin</option><option value="Bhutan">Bhutan</option><option value="Bolivia">Bolivia</option><option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option><option value="Botswana">Botswana</option><option value="Brazil">Brazil</option><option value="Brunei">Brunei</option><option value="Bulgaria">Bulgaria</option><option value="Burkina Faso">Burkina Faso</option><option value="Burundi">Burundi</option><option value="Cabo Verde">Cabo Verde</option><option value="Cambodia">Cambodia</option><option value="Cameroon">Cameroon</option><option value="Canada">Canada</option><option value="Central African Republic">Central African Republic</option><option value="Chad">Chad</option><option value="Chile">Chile</option><option value="China">China</option><option value="Colombia">Colombia</option><option value="Comoros">Comoros</option><option value="Congo">Congo</option><option value="Costa Rica">Costa Rica</option><option value="Croatia">Croatia</option><option value="Cuba">Cuba</option><option value="Cyprus">Cyprus</option><option value="Czech Republic">Czech Republic</option><option value="Denmark">Denmark</option><option value="Djibouti">Djibouti</option><option value="Dominica">Dominica</option><option value="Dominican Republic">Dominican Republic</option><option value="Ecuador">Ecuador</option><option value="Egypt">Egypt</option><option value="El Salvador">El Salvador</option><option value="Equatorial Guinea">Equatorial Guinea</option><option value="Eritrea">Eritrea</option><option value="Estonia">Estonia</option><option value="Eswatini">Eswatini</option><option value="Ethiopia">Ethiopia</option><option value="Fiji">Fiji</option><option value="Finland">Finland</option><option value="France">France</option><option value="Gabon">Gabon</option><option value="Gambia">Gambia</option><option value="Georgia">Georgia</option><option value="Germany">Germany</option><option value="Ghana">Ghana</option><option value="Greece">Greece</option><option value="Grenada">Grenada</option><option value="Guatemala">Guatemala</option><option value="Guinea">Guinea</option><option value="Guinea-Bissau">Guinea-Bissau</option><option value="Guyana">Guyana</option><option value="Haiti">Haiti</option><option value="Honduras">Honduras</option><option value="Hungary">Hungary</option><option value="Iceland">Iceland</option><option value="India">India</option><option value="Indonesia">Indonesia</option><option value="Iran">Iran</option><option value="Iraq">Iraq</option><option value="Ireland">Ireland</option><option value="Israel">Israel</option><option value="Italy">Italy</option><option value="Jamaica">Jamaica</option><option value="Japan">Japan</option><option value="Jordan">Jordan</option><option value="Kazakhstan">Kazakhstan</option><option value="Kenya">Kenya</option><option value="Kiribati">Kiribati</option><option value="Korea, North">Korea, North</option><option value="Korea, South">Korea, South</option><option value="Kosovo">Kosovo</option><option value="Kuwait">Kuwait</option><option value="Kyrgyzstan">Kyrgyzstan</option><option value="Laos">Laos</option><option value="Latvia">Latvia</option><option value="Lebanon">Lebanon</option><option value="Lesotho">Lesotho</option><option value="Liberia">Liberia</option><option value="Libya">Libya</option><option value="Liechtenstein">Liechtenstein</option><option value="Lithuania">Lithuania</option><option value="Luxembourg">Luxembourg</option><option value="Madagascar">Madagascar</option><option value="Malawi">Malawi</option><option value="Malaysia">Malaysia</option><option value="Maldives">Maldives</option><option value="Mali">Mali</option><option value="Malta">Malta</option><option value="Marshall Islands">Marshall Islands</option><option value="Mauritania">Mauritania</option><option value="Mauritius">Mauritius</option><option value="Mexico">Mexico</option><option value="Micronesia">Micronesia</option><option value="Moldova">Moldova</option><option value="Monaco">Monaco</option><option value="Mongolia">Mongolia</option><option value="Montenegro">Montenegro</option><option value="Morocco">Morocco</option><option value="Mozambique">Mozambique</option><option value="Myanmar">Myanmar</option><option value="Namibia">Namibia</option><option value="Nauru">Nauru</option><option value="Nepal">Nepal</option><option value="Netherlands">Netherlands</option><option value="New Zealand">New Zealand</option><option value="Nicaragua">Nicaragua</option><option value="Niger">Niger</option><option value="Nigeria">Nigeria</option><option value="North Macedonia">North Macedonia</option><option value="Norway">Norway</option><option value="Oman">Oman</option><option value="Pakistan">Pakistan</option><option value="Palau">Palau</option><option value="Palestine">Palestine</option><option value="Panama">Panama</option><option value="Papua New Guinea">Papua New Guinea</option><option value="Paraguay">Paraguay</option><option value="Peru">Peru</option><option value="Philippines">Philippines</option><option value="Poland">Poland</option><option value="Portugal">Portugal</option><option value="Qatar">Qatar</option><option value="Romania">Romania</option><option value="Russia">Russia</option><option value="Rwanda">Rwanda</option><option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option><option value="Saint Lucia">Saint Lucia</option><option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option><option value="Samoa">Samoa</option><option value="San Marino">San Marino</option><option value="Sao Tome and Principe">Sao Tome and Principe</option><option value="Saudi Arabia">Saudi Arabia</option><option value="Senegal">Senegal</option><option value="Serbia">Serbia</option><option value="Seychelles">Seychelles</option><option value="Sierra Leone">Sierra Leone</option><option value="Singapore">Singapore</option><option value="Slovakia">Slovakia</option><option value="Slovenia">Slovenia</option><option value="Solomon Islands">Solomon Islands</option><option value="Somalia">Somalia</option><option value="South Africa">South Africa</option><option value="South Sudan">South Sudan</option><option value="Spain">Spain</option><option value="Sri Lanka">Sri Lanka</option><option value="Sudan">Sudan</option><option value="Suriname">Suriname</option><option value="Sweden">Sweden</option><option value="Switzerland">Switzerland</option><option value="Syria">Syria</option><option value="Taiwan">Taiwan</option><option value="Tajikistan">Tajikistan</option><option value="Tanzania">Tanzania</option><option value="Thailand">Thailand</option><option value="Timor-Leste">Timor-Leste</option><option value="Togo">Togo</option><option value="Tonga">Tonga</option><option value="Trinidad and Tobago">Trinidad and Tobago</option><option value="Tunisia">Tunisia</option><option value="Turkey">Turkey</option><option value="Turkmenistan">Turkmenistan</option><option value="Tuvalu">Tuvalu</option><option value="Uganda">Uganda</option><option value="Ukraine">Ukraine</option><option value="United Arab Emirates">United Arab Emirates</option><option value="United Kingdom">United Kingdom</option><option value="United States">United States</option><option value="Uruguay">Uruguay</option><option value="Uzbekistan">Uzbekistan</option><option value="Vanuatu">Vanuatu</option><option value="Vatican City">Vatican City</option><option value="Venezuela">Venezuela</option><option value="Vietnam">Vietnam</option><option value="Yemen">Yemen</option><option value="Zambia">Zambia</option><option value="Zimbabwe">Zimbabwe</option></select>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+<select class="input" id="regGender"><option value="">Gender *</option><option value="male">Male</option><option value="female">Female</option><option value="non-binary">Non-binary</option><option value="other">Other</option></select>
+<select class="input" id="regMarital"><option value="">Marital *</option><option value="single">Single</option><option value="married">Married</option><option value="divorced">Divorced</option><option value="widowed">Widowed</option></select>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+<input class="input" id="regCounty" placeholder="County *">
+<input class="input" id="regTown" placeholder="Town *">
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+<input class="input" id="regAge" type="number" min="13" max="100" placeholder="Age *">
+<input class="input" id="regDOB" type="date">
+</div>
+<div id="agePreview" style="font-size:11px;margin-top:6px;color:#0f0"></div>
+<input class="input" id="regEmail" placeholder="Email *" type="email" style="margin-top:8px">
+<input class="input" id="regPassword" placeholder="Password *" type="password">
+<input class="input" id="regConfirmPassword" placeholder="Confirm *" type="password">
+<div style="display:flex;gap:8px;margin-top:10px"><input type="checkbox" id="regTerms"><label for="regTerms" style="font-size:10px;color:#888">I agree terms</label></div>
+<button class="btn btn-white" onclick="registerUserFull()" style="margin-top:12px;width:100%;padding:14px;font-weight:800;background:#fff;color:#000;border-radius:12px">Continue → Dashboard</button>
+<div id="regError" style="font-size:12px;color:#ff0040;margin-top:8px;text-align:center"></div>
+<div style="font-size:9px;color:#666;margin-top:8px;text-align:center" id="apiStatus">Supabase ready</div>
+</div>
+</div>
+</div>
+
+
+<div class="app" id="app">
+<div class="header-top">
+<div class="logo">FUSE</div>
+<div class="live-dot"><span class="dot"></span> LIVE</div>
+<div class="search-bar-top" onclick="openExplorer()"><span>🔍</span> Search</div>
+<div class="icon-btn badge" onclick="openInbox()">🔔</div>
+<div class="icon-btn" style="background:#ff0040;color:#fff;font-weight:800" onclick="openProfile()">Y</div>
+<div class="icon-btn" onclick="openLive()">📡</div>
+<!-- Admin removed -->
+</div>
+<div class="story-tray" id="storyTray"></div>
+<div class="live-now-section">
+<div class="live-now-header"><div class="live-now-title"><span style="width:8px;height:8px;background:#ff0040;border-radius:4px;display:inline-block"></span> LIVE Now <span class="live-now-sub">• Swipe</span></div><div class="see-all" onclick="openLive()">See All ›</div></div>
+<div class="live-hscroll" id="liveHscroll"></div>
+</div>
+<div class="feed" id="feed"></div>
+<div class="bottom-nav">
+<div class="nav-item" onclick="goHome()"><div class="nav-icon active" id="nav-home">⌂</div><div class="nav-label active" id="label-home">HOME</div></div>
+<div class="nav-item" onclick="openMessages()"><div class="nav-icon" id="nav-msg">✉</div><div class="nav-label" id="label-msg">MESSAGE</div></div>
+<div class="nav-item" onclick="openCamera()"><div class="plus">+</div></div>
+<div class="nav-item" onclick="openInbox()"><div class="nav-icon" id="nav-inbox">◫</div><div class="nav-label" id="label-inbox">INBOX</div></div>
+<div class="nav-item" onclick="openProfile()"><div class="nav-icon" id="nav-profile">◍</div><div class="nav-label" id="label-profile">PROFILE</div></div>
+</div>
+</div>
+
+<div class="camera-screen" id="cameraScreen">
+<video id="cam" autoplay muted playsinline></video>
+<div class="cam-top"><span class="pill" onclick="closeCamera()">✕ Close</span><span class="pill">♫ Add sound</span><span class="pill" onclick="flipCam()">🔄 <span id="flipTxt">Front</span></span></div>
+<div class="cam-controls"><div class="gal" onclick="openGallery()"><span>🖼️</span><span style="font-size:8px">Gallery</span></div><div class="rec" id="recBtn" onpointerdown="startRec(event)" onpointerup="stopRec(event)" onclick="takePic()"><div class="rec-inner"></div></div><div class="pill" style="background:#fff;color:#000;padding:10px 20px;border-radius:20px;font-weight:700" onclick="closeCamera()">Done</div></div>
+<div class="tabs-create"><span class="tab-c active">POST</span><span class="tab-c">CREATE</span><span class="tab-c" onclick="openLive()">LIVE</span></div>
+</div>
+
+<div class="live-screen" id="liveScreen"><div class="live-header"><span style="font-weight:800">LIVE • Scroll • Comment</span><span style="background:#222;padding:8px 14px;border-radius:16px;cursor:pointer" onclick="closeLive()">✕</span></div><div class="live-feed" id="liveFeed"></div></div>
+
+<div class="msg-screen" id="msgScreen">
+<div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #222;background:#000"><span style="cursor:pointer;font-size:20px" onclick="goHome()">← Dashboard</span><span style="font-size:12px;color:#888">Back to dashboard</span></div>
+<div class="search-input"><span>🔍</span> Search or start new chat</div>
+<div class="pills-row"><div class="pill-filter active">All</div><div class="pill-filter inactive">Unread</div><div class="pill-filter inactive">Groups</div></div>
+<div class="quick-calls-header">QUICK CALLS • REAL WEBRTC</div>
+<div class="quick-calls-grid">
+<div class="quick-card voice" onclick="startVoiceQuick()"><div class="quick-icon voice">📞</div><div class="quick-title">Voice Call</div><div class="quick-sub">1:1 • Mic</div></div>
+<div class="quick-card video" onclick="startVideoQuick()"><div class="quick-icon video">📹</div><div class="quick-title">Video Call</div><div class="quick-sub">Camera • HD</div></div>
+<div class="quick-card group" onclick="startGroupQuick()"><div class="quick-icon group">👥</div><div class="quick-title">Group Call</div><div class="quick-sub">Up to 8</div></div>
+</div>
+<div id="msgList" style="flex:1;overflow-y:auto;background:#000"></div>
+</div>
+
+<div class="chat-screen" id="chatScreen"><div style="height:56px;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid #222;gap:12px;background:#000"><span style="cursor:pointer;font-size:20px" onclick="closeChat()">←</span><div id="chatAv" style="width:36px;height:36px;border-radius:18px;background:#8B5CF6;display:flex;align-items:center;justify-content:center;font-weight:700">AL</div><div><div id="chatName" style="font-weight:700;font-size:14px">Ava Lane</div><div style="font-size:11px;color:#0f0">online</div></div><div style="margin-left:auto;display:flex;gap:8px"><span style="width:34px;height:34px;background:#1e1e1e;border-radius:17px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="startVoiceCall()">📞</span><span style="width:34px;height:34px;background:#1e1e1e;border-radius:17px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="startVideoCall()">📹</span><span style="width:34px;height:34px;background:#1e1e1e;border-radius:17px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="startGroupCall()">👥</span></div></div><div style="flex:1;padding:16px;overflow-y:auto" id="chatMsgs"><div style="background:#1e1e1e;padding:10px 14px;border-radius:18px;border-bottom-left-radius:4px;max-width:70%;font-size:13px">✓✓ 🎤 <i>Voice note • 0:12</i></div></div><div style="padding:12px;display:flex;gap:8px;border-top:1px solid #222"><span style="background:#1e1e1e;padding:8px 12px;border-radius:20px;cursor:pointer" onclick="openGallery()">🖼️</span><span style="background:#1e1e1e;padding:8px 12px;border-radius:20px;cursor:pointer" onclick="openCamera()">📷</span><input placeholder="Message..." style="flex:1;background:#1e1e1e;border:none;border-radius:20px;padding:8px 14px;color:#fff;outline:none"><span style="background:#0095f6;padding:8px 14px;border-radius:20px;cursor:pointer">🎤</span></div></div>
+
+<div class="call-screen" id="callScreen"><div class="call-top-bar"><span style="cursor:pointer" onclick="endCallToDashboard()">← Back to Dashboard</span><span id="callTypeLabel" style="font-size:12px;font-weight:700">Voice Call</span><span style="background:#222;padding:6px 12px;border-radius:12px;cursor:pointer" onclick="endCallToDashboard()">✕</span></div><div id="singleCallView" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%"><div style="width:110px;height:110px;border-radius:55px;background:#222;display:flex;align-items:center;justify-content:center;font-size:36px" id="callAv2">AL</div><div id="callName2" style="font-weight:700;margin-top:12px">Ava Lane</div><div id="callStatus" style="color:#888;font-size:12px;margin-top:4px">Calling...</div><video id="callCam" autoplay muted playsinline style="width:260px;height:360px;background:#111;border-radius:16px;margin-top:16px;object-fit:cover;display:none"></video><div id="callPlaceholder" style="width:260px;height:360px;background:#111;border-radius:16px;margin-top:16px;display:flex;align-items:center;justify-content:center;color:#666;font-size:13px;text-align:center;padding:20px">Tap Allow<br>Real WebRTC</div></div><div id="groupCallView" style="flex:1;display:none;flex-direction:column;width:100%"><div style="padding:8px 16px;font-size:11px;color:#888;display:flex;justify-content:space-between"><span>Group Call • Up to 8 • Grid</span><span id="participantCount">1/8</span></div><div class="group-grid" id="groupGrid"></div></div><div style="padding:16px;display:flex;gap:16px;justify-content:center;background:#000;border-top:1px solid #222;width:100%"><div style="width:56px;height:56px;border-radius:28px;background:#222;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="toggleMute()" id="muteBtn">🎤</div><div style="width:56px;height:56px;border-radius:28px;background:#ff0040;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff" onclick="endCallToDashboard()">✕ End</div><div style="width:56px;height:56px;border-radius:28px;background:#222;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="flipCallCam()">🔄</div><div style="width:56px;height:56px;border-radius:28px;background:#222;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="addParticipant()">➕</div></div></div>
+
+<div class="inbox-screen" id="inboxScreen"><div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #222;background:#000"><span style="cursor:pointer;font-size:20px" onclick="goHome()">← Dashboard</span><span style="font-weight:700">Inbox</span><span>⋯</span></div><div style="padding:16px;flex:1;overflow-y:auto"><div style="background:#111;padding:12px;border-radius:12px;margin-bottom:8px">❤️ Ava Lane liked your video • 2m</div><div style="background:#111;padding:12px;border-radius:12px;margin-bottom:8px">💬 Mason Grey: "Fire! 🔥" • 10m</div><div style="background:#111;padding:12px;border-radius:12px;margin-bottom:8px">👤 Jules Park followed you • 1h</div></div></div>
+
+<div class="profile-screen" id="profileScreen"><div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #222;background:#000"><span style="cursor:pointer;font-size:20px" onclick="goHome()">← Dashboard</span><span style="font-weight:700">My Profile • Y</span><span>⚙️</span></div><div style="padding:20px;text-align:center;flex:1;overflow-y:auto"><div style="width:80px;height:80px;border-radius:40px;background:#ff0040;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800" id="myProfileInit">Y</div><div style="font-weight:700;margin-top:12px" id="myProfileName">You • Y</div><div style="color:#888;font-size:12px" id="myProfileHandle">@you • 1.2K followers • Age: --</div><div style="display:flex;gap:10px;justify-content:center;margin-top:16px"><div style="background:#fff;color:#000;padding:8px 20px;border-radius:20px;font-weight:700">Follow</div><div style="background:#1e1e1e;padding:8px 20px;border-radius:20px;font-weight:700">Friends</div></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:20px"><div style="background:#111;height:120px;border-radius:12px"></div><div style="background:#111;height:120px;border-radius:12px"></div><div style="background:#111;height:120px;border-radius:12px"></div></div><button class="btn btn-red" style="margin-top:20px" onclick="logout()">Logout • Clear Registration</button></div></div>
+
+<div class="user-profile-screen" id="userProfileScreen"><div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #222;background:#000"><span style="cursor:pointer;font-size:20px" onclick="closeUserProfile()">←</span><span style="font-weight:700" id="userProfileName">Profile</span><span>⋯</span></div><div style="padding:20px;text-align:center;flex:1;overflow-y:auto" id="userProfileContent"></div></div>
+
+<div class="explorer-screen" id="explorerScreen"><div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #222;background:#000"><span style="cursor:pointer;font-size:20px" onclick="closeExplorer()">← Back</span><span style="font-weight:700">Explorer • Google</span><span>🔍</span></div><div style="padding:16px"><div style="display:flex;gap:8px"><input id="explorerInput" placeholder="Search Google..." style="flex:1;background:#1a1a1a;border:1px solid #333;border-radius:20px;padding:12px 16px;color:#fff;outline:none" onkeypress="if(event.key==='Enter') doGoogleSearch()"><span style="background:#fff;color:#000;padding:12px 20px;border-radius:20px;font-weight:700;cursor:pointer" onclick="doGoogleSearch()">Search</span></div><div id="explorerResults" style="margin-top:16px"></div></div></div>
+
+<div class="shop-screen" id="shopScreen"><div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #222;background:#000"><span style="cursor:pointer;font-size:20px" onclick="closeShop()">← Back</span><span style="font-weight:700">Shop • TikTok/FB/IG Style</span><span>🛒 <span id="cartCount">0</span></span></div><div style="padding:16px;flex:1;overflow-y:auto"><div style="display:grid;gap:12px" id="shopList"></div><div style="margin-top:16px"><div style="background:#fff;color:#000;padding:14px;border-radius:12px;text-align:center;font-weight:700;cursor:pointer" onclick="checkout()">Checkout • <span id="cartTotal">$0</span></div></div></div></div>
+
+
+<div class="shop-screen" id="advertScreen" style="display:none;z-index:60">
+<div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #222;background:#000">
+<span style="cursor:pointer;font-size:20px" onclick="closeAdvert()">← Back</span><span style="font-weight:800">📢 Place Advert • Auto-Register</span><span>💳</span>
+</div>
+<div style="padding:18px;flex:1;overflow-y:auto">
+<div style="background:#111;border:1px solid #222;border-radius:16px;padding:16px;">
+<div style="font-weight:800;font-size:14px">Advertise your business - Like TikTok/FB/IG</div>
+<div style="font-size:10px;color:#888;margin-top:4px;margin-bottom:12px">Fill form → Pay via Stripe → Auto-appears in feed → Commission 15% to To & Fro • Barclays GBP</div>
+<input class="input" id="adCompany" placeholder="Company Name * e.g. Beach Wear Co">
+<input class="input" id="adEmail" placeholder="Business Email *">
+<input class="input" id="adProduct" placeholder="Product / Service * e.g. Sunset Hoodie">
+<select class="input" id="adCountry"><option value="">Target Country *</option><option value="UK">United Kingdom</option><option value="US">United States</option><option value="Global">Global</option><option value="Scotland">Scotland</option><option value="All">All Countries</option></select>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+<select class="input" id="adDuration"><option value="">Duration *</option><option value="hour">Hour - £5 / $6</option><option value="day">Day - £35 / $45</option><option value="week">Week - £199</option><option value="month">Month - £699</option><option value="year">Year - £6999</option><option value="cpm">CPM - £5 per 1000 views</option></select>
+<select class="input" id="adCurrency"><option value="GBP">£ GBP - Barclays</option><option value="USD">$ USD - Auto-convert to £</option><option value="EUR">€ EUR - Auto-convert</option></select>
+</div>
+<input class="input" id="adBudget" placeholder="Budget * e.g. 35" type="number" style="margin-top:8px">
+<textarea class="input" id="adText" placeholder="Ad Text * e.g. Venice Beach vibes - Limited edition" style="height:60px;resize:none;margin-top:8px"></textarea>
+<input class="input" id="adImage" placeholder="Image Emoji e.g. 🧥" style="margin-top:8px">
+<button class="btn btn-white" onclick="payAdvert()" style="margin-top:12px;width:100%;padding:14px;font-weight:800;background:#10b981;color:#fff;border-radius:12px">💳 Pay & Auto-Register Advert</button>
+<div id="adError" style="font-size:12px;color:#ff0040;margin-top:8px;text-align:center"></div>
+<div style="font-size:9px;color:#666;margin-top:8px;text-align:center">Supabase: advert_requests • Commission 15% auto-collected like TikTok/FB/IG</div>
+</div>
+<div style="margin-top:16px;background:#111;border:1px solid #222;border-radius:12px;padding:12px">
+<div style="font-size:12px;font-weight:700">📊 Your Adverts (Auto-Registered)</div>
+<div id="myAdvertsList" style="margin-top:8px;font-size:11px;color:#888">No adverts yet - place one above</div>
+</div>
+</div>
+</div>
+
+
+<div class="share-screen" id="shareScreen"><div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #222;background:#000"><span style="cursor:pointer;font-size:20px" onclick="closeShare()">←</span><span style="font-weight:700">Share</span><span>⋯</span></div><div style="padding:20px;text-align:center"><div style="font-weight:700;margin-bottom:16px">Share to other social media apps</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px"><div style="background:#25D366;padding:16px;border-radius:12px;cursor:pointer" onclick="shareTo('whatsapp')"><div style="font-size:24px">💬</div><div style="font-size:11px;margin-top:4px">WhatsApp</div></div><div style="background:#1DA1F2;padding:16px;border-radius:12px;cursor:pointer" onclick="shareTo('twitter')"><div style="font-size:24px">🐦</div><div style="font-size:11px">Twitter</div></div><div style="background:#1877F2;padding:16px;border-radius:12px;cursor:pointer" onclick="shareTo('facebook')"><div style="font-size:24px">📘</div><div style="font-size:11px">Facebook</div></div><div style="background:#000;padding:16px;border-radius:12px;border:1px solid #333;cursor:pointer" onclick="shareTo('copy')"><div style="font-size:24px">🔗</div><div style="font-size:11px">Copy Link</div></div></div></div></div>
+
+<!-- Admin removed -->
+
+
+<input type="file" id="fileInput" accept="image/*,video/*" style="display:none">
+<div class="toast" id="toast"></div>
+
+<script>
+// --- SHARED DB - CONNECTED TO MAIN APP ---
+let adminDB={
+ minAge: parseInt(localStorage.getItem('fuse_minAge')||'13'),
+ bannedWords: JSON.parse(localStorage.getItem('fuse_bannedWords')||'["nude","porn","sex explicit","kill yourself","brutal gore","dead body","fuck","hate kill","self harm","explicit"]'),
+ users: JSON.parse(localStorage.getItem('fuse_users')||'[]'),
+ reports: JSON.parse(localStorage.getItem('fuse_reports')||'[]')
+};
+let currentUser = JSON.parse(localStorage.getItem('fuse_currentUser')||'null');
+let posts=[], stream=null, facing='user', rec=null, chunks=[], recording=false, callStream=null, currentChat=null, callType='voice', likes={}, cart=[];
+const usersStory=[
+{id:'you',name:'Your story',init:'Y',color:'#ff0040',own:true,live:false,online:false},
+{id:'golive',name:'Go LIVE',init:'📹',color:'#1a1a1a',live:false,goLive:true,online:false},
+{id:'ava',name:'Ava',init:'AL',color:'#8B5CF6',live:true,online:true,location:'Venice Beach, CA',handle:'@avalanex'},
+{id:'mason',name:'Mason',init:'MG',color:'#14B8A6',live:true,online:true},
+{id:'sofia',name:'Sofia',init:'SC',color:'#10B981',live:true,online:true},
+{id:'jules',name:'Jules',init:'JP',color:'#F59E0B',live:false,online:false}
+];
+const liveStreams=[
+{user:'ava',name:'Ava',init:'AL',title:'Late night chat & music',viewers:'1.8K',color:'#8B5CF6',emoji:'🎧',comments:['kai: So good! 🔥','nora: Go live more!']},
+{user:'sofia',name:'Sofia',init:'SC',title:'Cooking live',viewers:'2.2K',color:'#10B981',emoji:'🍝',comments:['jules: Yummy!']},
+{user:'mason',name:'Mason',init:'MG',title:'Building startup',viewers:'5.1K',color:'#14B8A6',emoji:'💻',comments:['sofia: Inspiring!']}
+];
+const shopProducts=[
+{id:1,name:'Sunset Hoodie',price:49,image:'🧥',desc:'Venice Beach vibes'},
+{id:2,name:'Fuse Cap',price:29,image:'🧢',desc:'Limited edition'},
+{id:3,name:'Beach Tee',price:25,image:'👕',desc:'Organic cotton'},
+{id:4,name:'Live Ring Light',price:89,image:'💡',desc:'For creators'},
+{id:5,name:'Mic Pro',price:129,image:'🎤',desc:'Studio quality'}
+];
+const chats=[
+{name:'Ava Lane',init:'AL',id:'ava',last:'Voice note • 0:12',time:'2m',color:'#8B5CF6',online:true,unread:2,voice:true},
+{name:'Mason Grey',init:'MG',id:'mason',last:'You: See you at 7?',time:'11:42 AM',color:'#14B8A6',online:true,unread:0},
+{name:'Jules Park',init:'JP',id:'jules',last:'Draft ready',time:'Yesterday',color:'#F59E0B',online:false,unread:0}
+];
+
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3500)}
+function saveAdmin(){ localStorage.setItem('fuse_minAge',adminDB.minAge); localStorage.setItem('fuse_bannedWords',JSON.stringify(adminDB.bannedWords)); localStorage.setItem('fuse_users',JSON.stringify(adminDB.users)); localStorage.setItem('fuse_reports',JSON.stringify(adminDB.reports)); }
+
+
+window.SUPABASE_URL="https://eovfauohicospjuazjif.supabase.co";
+window.SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvdmZhdW9oaWNvc3ppdWF6amlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0MjQ4NjIsImV4cCI6MjEwNDAwMDg2Mn0.-5rDHdjH2THpYniSA5PLSveG29TO2vvB-KhruiWI-ns";
+function checkRegistration(){
+ try{
+  const dob=document.getElementById('regDOB'); const ageI=document.getElementById('regAge');
+  function upd(){let a=NaN; if(ageI&&ageI.value) a=parseInt(ageI.value); else if(dob&&dob.value) a=calculateAge(new Date(dob.value)); const p=document.getElementById('agePreview'); if(!p) return; if(isNaN(a)||a<=0){p.textContent='';return;} if(a<adminDB.minAge){p.style.color='#ff0040'; p.textContent='Age '+a+' under '+adminDB.minAge+'+ locked';} else {p.style.color='#0f0'; p.textContent='Age '+a+' OK';}}
+  if(dob) dob.addEventListener('change',upd); if(ageI) ageI.addEventListener('input',upd);
+  if(!currentUser){document.getElementById('regScreen').style.display='flex'; document.getElementById('app').style.display='none';}
+  else{document.getElementById('regScreen').style.display='none'; document.getElementById('app').style.display='flex';}
+  const st=document.getElementById('apiStatus'); if(st){st.textContent='Supabase connected - Local fallback OK'; st.style.color='#0f0';}
+ }catch(e){console.error(e); document.getElementById('regScreen').style.display='flex';}
+}
+function calculateAge(d){if(!(d instanceof Date)||isNaN(d)) return NaN; return Math.floor((Date.now()-d.getTime())/31557600000);}
+async function registerUserFull(){
+ const fn=document.getElementById('regFirstName').value.trim(); const sn=document.getElementById('regSurname').value.trim();
+ const co=document.getElementById('regCountry').value; const ge=document.getElementById('regGender').value; const ma=document.getElementById('regMarital').value;
+ const county=document.getElementById('regCounty').value.trim(); const town=document.getElementById('regTown').value.trim();
+ const ageV=document.getElementById('regAge').value.trim(); const dobV=document.getElementById('regDOB').value; const em=document.getElementById('regEmail').value.trim();
+ const pw=document.getElementById('regPassword').value; const cpw=document.getElementById('regConfirmPassword').value; const tr=document.getElementById('regTerms').checked;
+ const er=document.getElementById('regError'); if(er) er.textContent='';
+ if(!fn||!sn||!co||!ge||!ma||!county||!town||!ageV||!em||!pw||!cpw){er.textContent='Fill all *'; return;}
+ const age=parseInt(ageV); if(isNaN(age)||age<13){er.textContent='Age 13+'; return;}
+ if(age<adminDB.minAge){er.textContent='Locked under '+adminDB.minAge+'+'; return;}
+ if(!em.includes('@')){er.textContent='Valid email'; return;}
+ if(pw.length<6){er.textContent='Password 6+ chars'; return;}
+ if(pw!==cpw){er.textContent='Passwords mismatch'; return;}
+ if(!tr){er.textContent='Agree terms'; return;}
+ const full=fn+' '+sn; const handle='@'+fn.toLowerCase()+sn.toLowerCase().substring(0,2)+Math.floor(Math.random()*90+10);
+ const user={id:'u'+Date.now(),name:full,firstName:fn,surname:sn,country:co,gender:ge,marital:ma,county,town,age,dob:dobV,email:em,handle,status:'active',warnings:0,joined:new Date().toISOString()};
+ localStorage.setItem('fuse_currentUser',JSON.stringify(user)); adminDB.users.push(user); saveAdmin();
+ try{
+   fetch(window.SUPABASE_URL+'/rest/v1/users',{method:'POST',headers:{'apikey':window.SUPABASE_ANON_KEY,'Authorization':'Bearer '+window.SUPABASE_ANON_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({email:em,first_name:fn,surname:sn,country:co,gender:ge,marital_status:ma,county,town,age,dob:dobV||null,handle,full_name:full})}).then(r=>r.ok?toast('Saved to cloud ✓'):r.text().then(t=>{console.log(t); toast('Saved locally (run SQL table)');})).catch(e=>{console.log(e); toast('Saved locally - cloud failed but app works');});
+ }catch(e){console.log(e);}
+ document.getElementById('regScreen').style.display='none'; document.getElementById('app').style.display='flex'; renderTopNav(); renderFeed(); toast('Welcome '+full+'!');
+}
+function logout(){localStorage.removeItem('fuse_currentUser'); currentUser=null; location.reload();}
+function registerUser(){return registerUserFull();}
+
+
+
+// --- CONTENT FILTER CONNECTED ---
+function checkContentFilter(text){
+ const lower=text.toLowerCase();
+ const found=adminDB.bannedWords.find(w=>lower.includes(w.toLowerCase()));
+ if(found){
+  // Warn and lock if needed
+  if(currentUser){
+   currentUser.warnings=(currentUser.warnings||0)+1;
+   const idx=adminDB.users.findIndex(u=>u.id===currentUser.id);
+   if(idx>=0){ adminDB.users[idx].warnings=currentUser.warnings; }
+   // Gore / nudity immediate lock after 1, others after 2
+   const isCritical=['nude','porn','dead body','brutal gore','explicit'].some(k=>found.includes(k));
+   if(isCritical || currentUser.warnings>=2){
+    currentUser.status='locked';
+    if(idx>=0) adminDB.users[idx].status='locked';
+    adminDB.reports.push({id:'r'+Date.now(),user:currentUser.handle,type:found.includes('nude')||found.includes('porn')?'Nudity / Sexual':found.includes('dead')||found.includes('gore')?'Gore / Dead body brutal':'Hate / Inappropriate',content:text,severity:isCritical?'critical':'medium',status:'auto-locked',time:'now'});
+    saveAdmin();
+    localStorage.setItem('fuse_currentUser',JSON.stringify(currentUser));
+    toast(`Content blocked: "${found}" • ${isCritical?'Critical • Immediate lock':'Warning '+currentUser.warnings+'/2 • Next = lock'} • Like TikTok/IG`);
+    setTimeout(()=>{ alert(`Locked: Your content "${text}" violates policy (${found}). Account locked.`); logout(); },500);
+    return false;
+   }else{
+    adminDB.reports.push({id:'r'+Date.now(),user:currentUser.handle,type:'Inappropriate',content:text,severity:'medium',status:'warned',time:'now'});
+    saveAdmin();
+    localStorage.setItem('fuse_currentUser',JSON.stringify(currentUser));
+    toast(`Warning: "${found}" inappropriate • ${currentUser.warnings}/2 warnings • Next = lock`);
+    return false;
+   }
+  }
+  return false;
+ }
+ return true;
+}
+
+// --- RENDER TOP NAV ETC (same as before) ---
+function renderTopNav(){
+ const tray=document.getElementById('storyTray'); if(!tray) return; tray.innerHTML='';
+ usersStory.forEach(u=>{
+  const div=document.createElement('div'); div.className='story-item';
+  let avatarClass='story-avatar'; let extra='';
+  if(u.own) avatarClass+=' own';
+  if(u.live) { avatarClass+=' live'; extra=`<div class="live-badge-story">LIVE</div>`; }
+  if(u.goLive) { extra=`<div class="live-badge-story" style="background:#1a1a1a;border:1px solid #333">LIVE</div>`; }
+  const online = u.online?`<div class="online-dot-story"></div>`:'';
+  const plus = u.own?`<div class="plus-story">+</div>`:'';
+  div.innerHTML=`<div class="${avatarClass}" style="background:${u.color}">${u.init}${plus}${extra}${online}</div><div class="story-name">${u.name}</div>`;
+  div.onclick=()=>{ if(u.goLive){ openLive(); } else if(u.own){ openProfile(); } else { openUserProfile(u.id); } };
+  tray.appendChild(div);
+ });
+ const hscroll=document.getElementById('liveHscroll'); if(!hscroll) return; hscroll.innerHTML='';
+ liveStreams.forEach(ls=>{
+  const div=document.createElement('div'); div.className='live-hcard'; div.style.background=ls.color;
+  div.innerHTML=`<div style="position:absolute;top:8px;left:8px;background:#ff0040;color:#fff;font-size:9px;padding:3px 8px;border-radius:10px;font-weight:800">LIVE</div><div class="live-hcard-content"><div style="font-size:28px;font-weight:800">${ls.init}</div><div style="font-size:12px;font-weight:700;margin-top:4px">${ls.name}</div><div style="font-size:11px;opacity:0.8">👁 ${ls.viewers}</div></div>`;
+  div.onclick=()=>openLive(ls.user);
+  hscroll.appendChild(div);
+ });
+ const seeAll=document.createElement('div'); seeAll.className='live-hcard'; seeAll.style.background='#1a1a1a'; seeAll.style.border='1px solid #222';
+ seeAll.innerHTML=`<div style="text-align:center;width:100%"><div style="font-size:20px">👁</div><div style="font-size:12px;margin-top:8px">See all</div><div style="font-size:11px;color:#666">2 live</div></div>`;
+ seeAll.onclick=()=>openLive();
+ hscroll.appendChild(seeAll);
+}
+
+function renderFeed(){
+ const feed=document.getElementById('feed'); if(!feed) return;
+ let html='';
+ if(posts.length>0){
+  posts.slice().reverse().forEach((p,idx)=>{
+   const id='vid_'+Date.now()+'_'+idx;
+   const postId='post_'+idx;
+   const likeCount=likes[postId]||{count: Math.floor(Math.random()*1200)+12, liked:false};
+   likes[postId]=likeCount;
+   let media='';
+   if(p.url){
+     if(p.kind==='video'){
+       media=`<div class="media-wrap"><video id="${id}" src="${p.url}" controls playsinline webkit-playsinline preload="auto" style="width:100%;background:#000;display:block;object-fit:contain"></video></div>`;
+     }else{
+       media=`<div class="media-wrap"><img src="${p.url}"></div>`;
+     }
+   }
+   html+=`<div class="post"><div class="post-head"><div class="avatar-post">You</div><div><div style="font-size:13px;font-weight:700">you • ${p.type}</div><div style="font-size:11px;color:#666">${p.target} • Just now</div></div><div class="follow-btn">Following</div></div><div class="post-layout"><div class="post-media-col">${media}<div style="font-size:13px;margin-top:8px"><b>you</b> ${p.caption}</div></div><div class="engagement-col"><div class="eng-btn ${likeCount.liked?'liked':''}" onclick="toggleLike('${postId}', this)"><span>${likeCount.liked?'❤️':'🤍'}</span></div><div class="eng-count" id="likeCount_${postId}">${formatCount(likeCount.count)}</div><div class="eng-btn" onclick="openShare('${postId}')"><span>💬</span></div><div class="eng-count">89</div><div class="eng-btn" onclick="openShare('${postId}')"><span>↗️</span></div><div class="eng-count">Share</div><div class="eng-btn" onclick="openShop('${postId}')"><span>🛍️</span></div><div class="eng-count">Shop</div><div class="eng-btn" onclick="openExplorer()"><span>🔍</span></div><div class="eng-count">Explorer</div></div></div></div>`;
+  });
+ }
+ html+=`<div class="post"><div class="post-head"><div class="avatar-post" style="background:#8B5CF6">AL</div><div><div style="font-size:13px;font-weight:700;display:flex;gap:6px">@avalanex <span style="color:#666;font-weight:400">• Venice Beach, CA</span></div><div style="font-size:11px;color:#888">Ava Lane</div></div><div class="follow-btn">Follow</div></div><div class="post-layout"><div class="post-media-col"><div class="media-wrap" style="background:linear-gradient(135deg,#ff8a00,#ff2d55);height:360px;display:flex;align-items:center;justify-content:center;font-size:48px">🌅</div><div style="font-size:13px;margin-top:8px"><b>@avalanex</b> Sunset vibes at Venice Beach 🌅 #live #fuse</div></div><div class="engagement-col"><div class="eng-btn" id="likeBtn_main" onclick="toggleLike('main', this)"><span>🤍</span></div><div class="eng-count" id="likeCount_main">1.2K</div><div class="eng-btn" onclick="openShare('main')"><span>💬</span></div><div class="eng-count">89</div><div class="eng-btn" onclick="openShare('main')"><span>↗️</span></div><div class="eng-count">Share</div><div class="eng-btn" onclick="openShop('main')"><span>🛍️</span></div><div class="eng-count">Shop</div><div class="eng-btn" onclick="openExplorer()"><span>🔍</span></div><div class="eng-count">Explorer</div></div></div></div>`;
+ feed.innerHTML=html;
+ setTimeout(()=>{
+  const obs=new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(!e.isIntersecting){ e.target.pause(); } }); },{threshold:0.25});
+  document.querySelectorAll('video').forEach(v=>{ if(v.id.startsWith('vid_')) obs.observe(v); });
+ },400);
+}
+function formatCount(n){ if(n>=1000) return (n/1000).toFixed(1)+'K'; return n.toString(); }
+function toggleLike(postId, btn){
+ const likeData=likes[postId]||{count:1200,liked:false};
+ if(likeData.liked){ likeData.count--; likeData.liked=false; btn.classList.remove('liked'); btn.innerHTML='<span>🤍</span>'; }
+ else{ likeData.count++; likeData.liked=true; btn.classList.add('liked'); btn.innerHTML='<span>❤️</span>'; }
+ likes[postId]=likeData;
+ document.getElementById('likeCount_'+postId).textContent=formatCount(likeData.count);
+ toast(likeData.liked?'Liked • '+formatCount(likeData.count)+' ❤️':'Unliked');
+}
+function renderMessages(){
+ const list=document.getElementById('msgList'); if(!list) return; list.innerHTML='';
+ chats.forEach(c=>{
+  const d=document.createElement('div'); d.className='chat-row';
+  d.innerHTML=`<div class="chat-avatar" style="background:${c.color}">${c.init}<div class="online-dot" style="display:${c.online?'block':'none'}"></div></div><div style="flex:1"><div style="font-weight:600;font-size:15px;color:#fff;display:flex;gap:8px;align-items:center">${c.name}<span style="font-size:11px;color:#888;font-weight:400">${c.time}</span></div><div style="font-size:13px;color:${c.voice?'#fff':'#888'};margin-top:2px">${c.voice?'✓✓ 🎤 <i>Voice note • 0:12</i>':'✓✓ '+c.last}</div></div><div style="display:flex;gap:8px;align-items:center"><div class="call-btn" onclick="event.stopPropagation(); openChat('${c.name}','${c.init}'); setTimeout(()=>startVoiceCall(),200)">📞</div><div class="call-btn" onclick="event.stopPropagation(); openChat('${c.name}','${c.init}'); setTimeout(()=>startVideoCall(),200)">📹</div>${c.unread?`<div style="background:#0f0;color:#000;width:22px;height:22px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800">${c.unread}</div>`:''}</div>`;
+  d.onclick=()=>openChat(c.name,c.init);
+  list.appendChild(d);
+ });
+}
+function renderLive(selectedUser=null){
+ const feed=document.getElementById('liveFeed'); if(!feed) return; feed.innerHTML='';
+ const streams = selectedUser ? liveStreams.filter(s=>s.user===selectedUser).concat(liveStreams.filter(s=>s.user!==selectedUser)) : liveStreams;
+ streams.forEach((ls,idx)=>{
+  const div=document.createElement('div'); div.className='live-item';
+  const isMe = idx===0 && !selectedUser;
+  const camHtml = isMe ? `<video id="liveCam_${ls.user}" autoplay muted playsinline style="width:100%;height:100%;object-fit:cover"></video>` : `<div style="width:100%;height:100%;background:${ls.color};display:flex;align-items:center;justify-content:center;font-size:64px">${ls.emoji}</div>`;
+  div.innerHTML=`<div class="live-video-full">${camHtml}<div style="position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between"><span style="background:#ff0040;padding:6px 12px;border-radius:16px;font-size:11px;font-weight:800">LIVE • ${ls.viewers}</span><span style="display:flex;gap:8px"><span style="background:rgba(0,0,0,0.6);padding:8px 12px;border-radius:16px;cursor:pointer" onclick="openUserProfile('${ls.user}')">👤 ${ls.name}</span><span style="background:rgba(0,0,0,0.6);padding:8px 14px;border-radius:16px;cursor:pointer" onclick="closeLive()">✕</span></span></div><div style="position:absolute;bottom:0;left:0;right:0;padding:14px;background:linear-gradient(transparent,rgba(0,0,0,0.85))"><div style="font-weight:700;font-size:14px">${ls.title}</div><div style="font-size:12px;color:#aaa">@${ls.user} • ${ls.viewers} watching</div><div id="comments_${ls.user}" style="margin-top:8px;display:flex;flex-direction:column;gap:4px;font-size:12px;max-height:80px;overflow-y:auto">${ls.comments.map(c=>`<div>${c}</div>`).join('')}</div><div style="display:flex;gap:8px;margin-top:12px"><input id="input_${ls.user}" placeholder="Comment on ${ls.name}'s live..." style="flex:1;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:8px 14px;color:#fff;outline:none"><span style="background:#fff;color:#000;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer" onclick="sendComment('${ls.user}')">Send</span><span style="background:linear-gradient(90deg,#ff8a00,#ff2d55);padding:8px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer" onclick="sendGift('${ls.user}')">🎁</span></div></div></div>`;
+  feed.appendChild(div);
+ });
+ if(!selectedUser){
+   setTimeout(async()=>{
+     try{
+       const camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:true});
+       const v=document.getElementById('liveCam_'+streams[0].user);
+       if(v) v.srcObject=camStream;
+       window.liveCamStream=camStream;
+     }catch(e){ toast('Allow camera for live • '+e.message); }
+   },300);
+ }
+}
+function sendComment(user){
+ const input=document.getElementById('input_'+user);
+ if(!input||!input.value.trim()) return;
+ if(!checkContentFilter(input.value)){ return; }
+ const commentsDiv=document.getElementById('comments_'+user);
+ const div=document.createElement('div'); div.textContent='you: '+input.value; div.style.color='#0f0';
+ commentsDiv.appendChild(div);
+ commentsDiv.scrollTop=commentsDiv.scrollHeight;
+ input.value='';
+ toast('Comment sent to '+user+' live');
+}
+function sendGift(user){ toast('🎁 Gift sent to '+user); }
+function openUserProfile(userId){
+ const u=usersStory.find(x=>x.id===userId); if(!u) return;
+ document.getElementById('userProfileScreen').style.display='flex';
+ document.getElementById('userProfileName').textContent=u.name;
+ const content=document.getElementById('userProfileContent');
+ content.innerHTML=`<div style="width:80px;height:80px;border-radius:40px;background:${u.color};margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800">${u.init}</div><div style="font-weight:700;margin-top:12px;font-size:18px">${u.name}</div><div style="color:#888;font-size:13px;margin-top:4px">${u.handle||'@'+u.id}</div><div style="color:#0f0;font-size:12px;margin-top:4px">${u.online?'● Online now':'○ Offline'}</div><div style="display:flex;gap:10px;justify-content:center;margin-top:16px"><div style="background:#fff;color:#000;padding:8px 20px;border-radius:20px;font-weight:700;cursor:pointer" onclick="toast('Followed '+u.name)">Follow</div><div style="background:#1e1e1e;padding:8px 20px;border-radius:20px;font-weight:700;cursor:pointer" onclick="openChat('${u.name}','${u.init}')">Message</div></div>`;
+}
+function closeUserProfile(){ document.getElementById('userProfileScreen').style.display='none'; }
+
+// Camera etc
+async function openCamera(){
+ document.getElementById('cameraScreen').style.display='flex';
+ try{ stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:true}); const v=document.getElementById('cam'); v.srcObject=stream; v.className=facing; document.getElementById('flipTxt').textContent=facing==='user'?'Front':'Back'; toast('Camera ON • '+facing); }catch(e){ toast('Allow camera • '+e.message); }
+}
+function closeCamera(){ if(stream){stream.getTracks().forEach(t=>t.stop()); stream=null;} document.getElementById('cameraScreen').style.display='none'; }
+async function flipCam(){
+ facing=facing==='user'?'environment':'user';
+ if(stream) stream.getTracks().forEach(t=>t.stop());
+ try{ stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:true}); const v=document.getElementById('cam'); v.srcObject=stream; v.className=facing; document.getElementById('flipTxt').textContent=facing==='user'?'Front':'Back'; toast('Switched to '+(facing==='user'?'FRONT you':'BACK event')); }catch(e){ toast('Flip failed: '+e.message); }
+}
+function openGallery(){ document.getElementById('fileInput').click(); }
+document.getElementById('fileInput').addEventListener('change', e=>{
+ const file=e.target.files[0]; if(!file) return;
+ const url=URL.createObjectURL(file);
+ const kind=file.type.startsWith('video')?'video':'image';
+ const captionPrompt=prompt('Caption (will be checked for banned words):','From gallery');
+ if(captionPrompt!==null){
+  if(!checkContentFilter(captionPrompt)){ e.target.value=''; return; }
+  posts.push({url,kind,type: kind==='video'?'gallery video':'gallery picture', target: confirm('Post to Feed? OK=Feed Cancel=Story')?'feed':'story', caption:captionPrompt});
+  renderFeed(); closeCamera(); toast('Posted • Filtered OK');
+ }
+ e.target.value='';
+});
+function takePic(){
+ if(!stream){ openCamera(); return; }
+ const v=document.getElementById('cam'); const c=document.createElement('canvas'); c.width=v.videoWidth; c.height=v.videoHeight; const ctx=c.getContext('2d'); if(facing==='user'){ ctx.translate(c.width,0); ctx.scale(-1,1);} ctx.drawImage(v,0,0);
+ const url=c.toDataURL('image/png');
+ const caption=prompt('Caption:','Shot with '+(facing==='user'?'front you':'back event'));
+ if(caption!==null){
+  if(!checkContentFilter(caption)) return;
+  posts.push({url,kind:'image',type:facing==='user'?'front selfie':'back event', target:'feed', caption});
+  renderFeed(); toast('Picture • Posted');
+ }
+}
+function startRec(e){
+ if(e) e.preventDefault();
+ recording=true; document.getElementById('recBtn').classList.add('recording');
+ if(!stream) return; chunks=[];
+ try{
+  let mime='video/webm;codecs=vp8,opus'; if(!MediaRecorder.isTypeSupported(mime)) mime='video/webm;codecs=vp8'; if(!MediaRecorder.isTypeSupported(mime)) mime='video/webm'; if(!MediaRecorder.isTypeSupported(mime)) mime='video/mp4';
+  rec=new MediaRecorder(stream,{mimeType:mime});
+  rec.ondataavailable=ev=>{ if(ev.data.size>0) chunks.push(ev.data); };
+  rec.onstop=()=>{ const blob=new Blob(chunks,{type:rec.mimeType}); const url=URL.createObjectURL(blob); const caption=prompt('Caption for video:','Video • shows picture + audio'); if(caption!==null){ if(!checkContentFilter(caption)){ return; } posts.push({url,kind:'video',type:facing==='user'?'front video':'back video', target:'feed', caption}); renderFeed(); toast('Video saved • Shows picture'); } };
+  rec.start(); toast('Recording...');
+ }catch(err){ toast('Record error: '+err.message); }
+}
+function stopRec(e){ if(e) e.preventDefault(); if(rec&&recording){ rec.stop(); document.getElementById('recBtn').classList.remove('recording'); recording=false; } }
+
+function goHome(){
+ document.querySelectorAll('.msg-screen, .chat-screen, .call-screen, .inbox-screen, .profile-screen, .user-profile-screen, .live-screen, .camera-screen, .explorer-screen, .shop-screen, .share-screen, .admin-screen').forEach(el=>el.style.display='none');
+ if(window.liveCamStream){ window.liveCamStream.getTracks().forEach(t=>t.stop()); window.liveCamStream=null; }
+ renderTopNav(); renderFeed();
+ document.querySelectorAll('.nav-icon, .nav-label').forEach(el=>el.classList.remove('active'));
+ const nh=document.getElementById('nav-home'); if(nh) nh.classList.add('active');
+ const lh=document.getElementById('label-home'); if(lh) lh.classList.add('active');
+}
+function openLive(user=null){ document.getElementById('liveScreen').style.display='flex'; renderLive(user); }
+function closeLive(){ if(window.liveCamStream){ window.liveCamStream.getTracks().forEach(t=>t.stop()); window.liveCamStream=null; } document.getElementById('liveScreen').style.display='none'; }
+function openMessages(){ document.getElementById('msgScreen').style.display='flex'; renderMessages(); }
+function closeMessages(){ goHome(); }
+function openInbox(){ document.getElementById('inboxScreen').style.display='flex'; }
+function openProfile(){ document.getElementById('profileScreen').style.display='flex'; }
+function openChat(name,init){ document.getElementById('chatScreen').style.display='flex'; document.getElementById('chatName').textContent=name; document.getElementById('chatAv').textContent=init; currentChat={name,init}; }
+function closeChat(){ document.getElementById('chatScreen').style.display='none'; document.getElementById('msgScreen').style.display='flex'; }
+function openExplorer(){ document.getElementById('explorerScreen').style.display='flex'; }
+function closeExplorer(){ document.getElementById('explorerScreen').style.display='none'; }
+function doGoogleSearch(){ const q=document.getElementById('explorerInput').value.trim(); if(!q) return; if(!checkContentFilter(q)) return; window.open('https://www.google.com/search?q='+encodeURIComponent(q), '_blank'); toast('Explorer • Google: '+q); }
+function openShop(postId){ document.getElementById('shopScreen').style.display='flex'; const list=document.getElementById('shopList'); list.innerHTML=''; shopProducts.forEach(p=>{ const div=document.createElement('div'); div.style.background='#111'; div.style.borderRadius='12px'; div.style.padding='12px'; div.style.display='flex'; div.style.gap='12px'; div.style.alignItems='center'; div.style.border='1px solid #222'; div.innerHTML=`<div style="width:56px;height:56px;background:#222;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px">${p.image}</div><div style="flex:1"><div style="font-weight:700;font-size:14px">${p.name}</div><div style="font-size:11px;color:#888">${p.desc}</div><div style="font-size:13px;font-weight:700;margin-top:4px;color:#0f0">$${p.price}</div></div><div style="background:#fff;color:#000;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer" onclick="addToCart(${p.id})">Add</div>`; list.appendChild(div); }); }
+function closeShop(){ document.getElementById('shopScreen').style.display='none'; }
+function addToCart(id){ const p=shopProducts.find(x=>x.id===id); cart.push(p); document.getElementById('cartCount').textContent=cart.length; const total=cart.reduce((s,x)=>s+x.price,0); document.getElementById('cartTotal').textContent='$'+total; toast('Added to cart • '+p.name); }
+function checkout(){ if(cart.length===0){ toast('Cart empty'); return; } const total=cart.reduce((s,x)=>s+x.price,0); toast('Checkout • $'+total+' • '+cart.length+' items • Order placed'); cart=[]; document.getElementById('cartCount').textContent='0'; document.getElementById('cartTotal').textContent='$0'; }
+function openShare(postId){ document.getElementById('shareScreen').style.display='flex'; }
+function closeShare(){ document.getElementById('shareScreen').style.display='none'; }
+function shareTo(platform){ const url='https://fuse.app/post/'+Date.now(); const text='Check this on FUSE 🔥 '+url; if(platform==='whatsapp'){ window.open('https://wa.me/?text='+encodeURIComponent(text), '_blank'); } else if(platform==='twitter'){ window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text), '_blank'); } else if(platform==='facebook'){ window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url), '_blank'); } else { navigator.clipboard.writeText(url); toast('Link copied • '+url); } }
+function openAdmin(){ document.getElementById('adminScreen').style.display='flex'; renderAdmin(); }
+function closeAdmin(){ document.getElementById('adminScreen').style.display='none'; }
+function renderAdmin(){
+ document.getElementById('adminMinAge').textContent=adminDB.minAge+'+';
+ document.getElementById('adminBannedCount').textContent=adminDB.bannedWords.length;
+ document.getElementById('adminAgeSelect').value=adminDB.minAge;
+ const list=document.getElementById('adminBannedList'); list.innerHTML=''; adminDB.bannedWords.forEach(w=>{ const span=document.createElement('span'); span.style.background='#222'; span.style.padding='6px 10px'; span.style.borderRadius='16px'; span.style.fontSize='11px'; span.style.border='1px solid #333'; span.innerHTML=`${w} <span style="cursor:pointer" onclick="adminRemoveBanned('${w}')">✕</span>`; list.appendChild(span); });
+ const usersDiv=document.getElementById('adminUsersList'); usersDiv.innerHTML=`Total users: ${adminDB.users.length} • Reports: ${adminDB.reports.length}<br><br>`+adminDB.users.slice(-5).map(u=>`${u.handle} • Age ${u.age} • ${u.status} • Warnings ${u.warnings||0} • ${u.reason||''}`).join('<br>') + '<br><br>Reports:<br>'+adminDB.reports.slice(-5).map(r=>`${r.user} • ${r.type} • ${r.severity} • ${r.status}`).join('<br>');
+}
+function setMinAge(v){ adminDB.minAge=parseInt(v); saveAdmin(); renderAdmin(); toast('Min age set to '+v+'+ • Connected to main app • Registration will lock underage'); }
+function adminAddBanned(){ const v=document.getElementById('adminNewBanned').value.trim().toLowerCase(); if(!v) return; adminDB.bannedWords.push(v); saveAdmin(); document.getElementById('adminNewBanned').value=''; renderAdmin(); toast('Banned word added: '+v+' • Connected to feed filter'); }
+function adminRemoveBanned(w){ adminDB.bannedWords=adminDB.bannedWords.filter(x=>x!==w); saveAdmin(); renderAdmin(); }
+
+// Calls
+async function startVoiceQuick(){
+ currentChat={name:'Ava Lane',init:'AL'}; callType='voice';
+ document.getElementById('callScreen').style.display='flex';
+ document.getElementById('singleCallView').style.display='flex';
+ document.getElementById('groupCallView').style.display='none';
+ document.getElementById('callTypeLabel').textContent='Voice Call • 1:1 • Mic';
+ document.getElementById('callName2').textContent='Voice Call • 1:1 • Mic';
+ document.getElementById('callAv2').textContent='AL';
+ document.getElementById('callStatus').textContent='Voice Call • Ringing...';
+ document.getElementById('callCam').style.display='none';
+ document.getElementById('callPlaceholder').style.display='flex';
+ try{ callStream=await navigator.mediaDevices.getUserMedia({audio:true}); document.getElementById('callStatus').textContent='Voice Call • Connected • Mic ON'; toast('Voice Call • Connected'); }catch(e){ toast('Allow mic: '+e.message); }
+}
+async function startVideoQuick(){
+ currentChat={name:'Ava Lane',init:'AL'}; callType='video';
+ document.getElementById('callScreen').style.display='flex';
+ document.getElementById('singleCallView').style.display='flex';
+ document.getElementById('groupCallView').style.display='none';
+ document.getElementById('callTypeLabel').textContent='Video Call • Camera • HD';
+ document.getElementById('callName2').textContent='Video Call • Camera • HD';
+ document.getElementById('callAv2').textContent='AL';
+ document.getElementById('callStatus').textContent='Video Call • Connecting...';
+ try{ callStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:1280},height:{ideal:720}},audio:true}); const v=document.getElementById('callCam'); v.srcObject=callStream; v.style.display='block'; document.getElementById('callPlaceholder').style.display='none'; document.getElementById('callStatus').textContent='Video Call • Connected • HD'; toast('Video Call • Connected • HD'); }catch(e){ toast('Allow camera: '+e.message); }
+}
+async function startGroupQuick(){
+ currentChat={name:'Group',init:'👥'}; callType='group';
+ document.getElementById('callScreen').style.display='flex';
+ document.getElementById('singleCallView').style.display='none';
+ document.getElementById('groupCallView').style.display='flex';
+ document.getElementById('callTypeLabel').textContent='Group Call • Up to 8';
+ document.getElementById('groupGrid').innerHTML='';
+ const participants=[
+ {name:'You (AL)',color:'#8B5CF6',local:true},
+ {name:'Mason',color:'#14B8A6',local:false},
+ {name:'Jules',color:'#F59E0B',local:false},
+ {name:'Sofia',color:'#10B981',local:false},
+ {name:'Nora',color:'#EC4899',local:false},
+ {name:'Kai',color:'#F59E0B',local:false},
+ {name:'Luna',color:'#8B5CF6',local:false},
+ {name:'Alex',color:'#06B6D4',local:false}
+ ];
+ participants.forEach((p,i)=>{
+  const tile=document.createElement('div'); tile.className='group-tile'+(p.local?' local':'');
+  if(p.local){
+    tile.innerHTML=`<video id="groupLocal" autoplay muted playsinline style="width:100%;height:100%;object-fit:cover"></video><div style="position:absolute;bottom:6px;left:6px;background:rgba(0,0,0,0.6);padding:2px 8px;border-radius:10px;font-size:10px">${p.name} • You</div>`;
+  }else{
+    tile.innerHTML=`<div style="width:100%;height:100%;background:${p.color};display:flex;align-items:center;justify-content:center;font-size:24px">${p.name[0]}</div><div style="position:absolute;bottom:6px;left:6px;background:rgba(0,0,0,0.6);padding:2px 8px;border-radius:10px;font-size:10px">${p.name}</div>`;
+  }
+  document.getElementById('groupGrid').appendChild(tile);
+ });
+ try{
+   callStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:true});
+   setTimeout(()=>{ const v=document.getElementById('groupLocal'); if(v) v.srcObject=callStream; },200);
+   document.getElementById('participantCount').textContent='8/8 joined • Grid';
+   toast('Group Call • Up to 8 • Grid');
+ }catch(e){ toast('Allow camera: '+e.message); }
+}
+function addParticipant(){ toast('Add participant • Invite link copied • Up to 8'); }
+async function startVoiceCall(){ startVoiceQuick(); }
+async function startVideoCall(){ startVideoQuick(); }
+function startGroupCall(){ startGroupQuick(); }
+function flipCallCam(){
+ facing=facing==='user'?'environment':'user';
+ if(callStream) callStream.getTracks().forEach(t=>t.stop());
+ navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:true}).then(s=>{ callStream=s; if(callType==='group'){ const v=document.getElementById('groupLocal'); if(v) v.srcObject=s; }else{ const v=document.getElementById('callCam'); v.srcObject=s; v.style.display='block'; document.getElementById('callPlaceholder').style.display='none'; } toast('Flipped to '+(facing==='user'?'front':'back')); }).catch(e=>toast('Flip failed: '+e.message));
+}
+function toggleMute(){ const b=document.getElementById('muteBtn'); b.textContent=b.textContent==='🎤'?'🔇':'🎤'; if(callStream){ callStream.getAudioTracks().forEach(t=>t.enabled = b.textContent==='🎤'); } toast(b.textContent==='🔇'?'Muted':'Unmuted'); }
+function endCallToDashboard(){
+ if(callStream){callStream.getTracks().forEach(t=>t.stop()); callStream=null;}
+ document.getElementById('callScreen').style.display='none';
+ document.getElementById('callCam').style.display='none';
+ document.getElementById('groupCallView').style.display='none';
+ document.getElementById('singleCallView').style.display='flex';
+ document.getElementById('callPlaceholder').style.display='flex';
+ goHome();
+ toast('Call ended • Back to Dashboard');
+}
+function endCall(){ endCallToDashboard(); }
+
+// Init
+checkRegistration();
+renderTopNav();
+renderFeed();
+
+// --- ADVERT AUTO-REGISTER - CLEAN - NO DUPLICATE CART ---
+var advertRequests = JSON.parse(localStorage.getItem('fuse_adverts')||'[]');
+function openAdvert(){ const el=document.getElementById('advertScreen'); if(el){ el.style.display='flex'; renderMyAdverts(); } }
+function closeAdvert(){ const el=document.getElementById('advertScreen'); if(el) el.style.display='none'; }
+function payAdvert(){
+ const company=document.getElementById('adCompany').value.trim();
+ const email=document.getElementById('adEmail').value.trim();
+ const product=document.getElementById('adProduct').value.trim();
+ const country=document.getElementById('adCountry').value;
+ const duration=document.getElementById('adDuration').value;
+ const currency=document.getElementById('adCurrency').value;
+ const budget=document.getElementById('adBudget').value.trim();
+ const text=document.getElementById('adText').value.trim();
+ const image=document.getElementById('adImage').value.trim()||'📢';
+ const err=document.getElementById('adError'); if(err) err.textContent='';
+ if(!company||!email||!product||!country||!duration||!budget||!text){ if(err) err.textContent='Fill all *'; return; }
+ const budgetNum=parseFloat(budget); const commissionRate=0.15; const commission=budgetNum*commissionRate; const sellerPayout=budgetNum-commission;
+ let budgetGBP=budgetNum; if(currency==='USD') budgetGBP=budgetNum*0.78; if(currency==='EUR') budgetGBP=budgetNum*0.85;
+ const advert={id:'ad'+Date.now(),company,email,product,country,duration,currency,budget:budgetNum,budgetGBP,commission,sellerPayout,text,image,status:'paid',created:new Date().toISOString()};
+ advertRequests.push(advert); localStorage.setItem('fuse_adverts',JSON.stringify(advertRequests));
+ try{ fetch(window.SUPABASE_URL+'/rest/v1/advert_requests',{method:'POST',headers:{'apikey':window.SUPABASE_ANON_KEY,'Authorization':'Bearer '+window.SUPABASE_ANON_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({company_name:company,email,product_name:product,country,duration,currency,budget:budgetNum,budget_gbp:budgetGBP,commission,seller_payout:sellerPayout,ad_text:text,image_emoji:image,status:'paid'})}).then(r=>{ if(r.ok) toast('Advert saved to cloud ✓'); }).catch(e=>{}); }catch(e){}
+ renderMyAdverts(); toast('Paid £'+budgetGBP.toFixed(2)+' • You keep £'+commission.toFixed(2)+' (15%) • Advert LIVE'); closeAdvert();
+}
+function renderMyAdverts(){
+ const list=document.getElementById('myAdvertsList'); if(!list) return;
+ if(advertRequests.length===0){ list.innerHTML='<span style="color:#666">No adverts yet</span>'; return; }
+ list.innerHTML='';
+ advertRequests.slice().reverse().forEach(ad=>{
+   const div=document.createElement('div'); div.style.background='#000'; div.style.border='1px solid #222'; div.style.borderRadius='10px'; div.style.padding='10px'; div.style.marginBottom='8px';
+   div.innerHTML='<div style="font-weight:700">'+ad.image+' '+ad.company+' - '+ad.product+'</div><div style="font-size:10px;color:#888;margin-top:2px">'+ad.country+' • '+ad.duration+' • £'+ad.budgetGBP.toFixed(2)+' • Commission £'+ad.commission.toFixed(2)+'</div><div style="font-size:10px;color:#10b981;margin-top:4px">Status: '+ad.status+' • Auto-registered • LIVE</div>';
+   list.appendChild(div);
+ });
+}
+// Shop enhanced - use existing cart variable
+function renderShopWithCommission(){
+ const list=document.getElementById('shopList'); if(!list) return; list.innerHTML='';
+ const shopProducts=[{id:1,name:'Sunset Hoodie',price:49,image:'🧥',desc:'Venice Beach vibes'},{id:2,name:'Fuse Cap',price:29,image:'🧢',desc:'Limited edition'},{id:3,name:'Beach Tee',price:25,image:'👕',desc:'Organic cotton'},{id:4,name:'Live Ring Light',price:89,image:'💡',desc:'For creators'},{id:5,name:'Mic Pro',price:129,image:'🎤',desc:'Studio quality'}];
+ shopProducts.forEach(p=>{
+   const div=document.createElement('div'); div.style.background='#111'; div.style.border='1px solid #222'; div.style.borderRadius='12px'; div.style.padding='12px'; div.style.display='flex'; div.style.justifyContent='space-between'; div.style.alignItems='center';
+   div.innerHTML='<div style="display:flex;gap:12px;align-items:center"><div style="width:48px;height:48px;background:#000;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px">'+p.image+'</div><div><div style="font-weight:700;font-size:13px">'+p.name+'</div><div style="font-size:11px;color:#888">'+p.desc+'</div><div style="font-size:12px;color:#0f0;font-weight:700">$'+p.price+' • You keep $'+(p.price*0.15).toFixed(2)+' (15%)</div></div></div><div style="background:#fff;color:#000;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer" onclick="addToCart('+p.id+')">Add</div>';
+   list.appendChild(div);
+ });
+}
+var _origOpenShop = window.openShop;
+window.openShop = function(){ const el=document.getElementById('shopScreen'); if(el) el.style.display='flex'; renderShopWithCommission(); };
+
+</script>
+
+<script>
+// DEFINITIVE FIX - MOVING VIDEO + AUDIO (not frozen picture)
+// Problem: MediaRecorder was recording before video.play() and using mp4 which Android cannot record
+(function(){
+  // Remove old streams
+  if(window.streamGlobal){ try{ window.streamGlobal.getTracks().forEach(t=>t.stop()); }catch(e){} }
+  let stream=null, recorder=null, chunks=[], isRec=false;
+  const isAndroid = /Android/i.test(navigator.userAgent);
+
+  function getMimeForMovingVideo(){
+    // Android Chrome CANNOT record mp4 - must use vp8 for moving video
+    // mp4 recording produces frozen frame + audio
+    const androidList = ['video/webm;codecs=vp8,opus','video/webm;codecs=vp8','video/webm',''];
+    const desktopList = ['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm',''];
+    const list = isAndroid ? androidList : desktopList;
+    for(let m of list){
+      if(!m) return '';
+      try{ if(MediaRecorder.isTypeSupported(m)){ console.log('Selected mime for moving video:',m); return m; } }catch(e){}
+    }
+    return '';
+  }
+
+  async function initRealCamera(){
+    try{
+      // Stop any existing
+      if(stream){ stream.getTracks().forEach(t=>t.stop()); }
+      const s = await navigator.mediaDevices.getUserMedia({
+        video:{facingMode:'user', width:{ideal:1280}, height:{ideal:720}, frameRate:{ideal:30}},
+        audio:{echoCancellation:true, noiseSuppression:true}
+      });
+      stream=s;
+      window.streamGlobal=s;
+      const videos=document.querySelectorAll('video');
+      videos.forEach(v=>{
+        v.srcObject=s;
+        v.muted=true;
+        v.playsInline=true;
+        v.autoplay=true;
+        // CRITICAL: wait for playing before allowing record
+        v.onloadedmetadata=()=>{ v.play().catch(()=>{}); };
+      });
+      // Wait 500ms for video to actually start moving
+      await new Promise(r=>setTimeout(r,600));
+      return s;
+    }catch(e){
+      console.error('Camera fail',e);
+      alert('Allow camera+mic in browser settings');
+      return null;
+    }
+  }
+
+  window.realStartRecording = async function(){
+    if(isRec) return;
+    const s = await initRealCamera();
+    if(!s) return;
+    // Double check video is moving
+    const v=document.querySelector('video');
+    if(v && v.readyState < 2){
+      await new Promise(r=>{ v.onplaying=()=>r(); setTimeout(r,1000); });
+    }
+    chunks=[];
+    const mime=getMimeForMovingVideo();
+    const options = mime ? {mimeType:mime, videoBitsPerSecond:2500000} : {videoBitsPerSecond:2500000};
+    try{
+      recorder=new MediaRecorder(s, options);
+    }catch(e){
+      console.error('MediaRecorder create fail',e);
+      recorder=new MediaRecorder(s);
+    }
+    recorder.ondataavailable=e=>{ if(e.data && e.data.size>0) chunks.push(e.data); };
+    recorder.onstop=()=>{
+      const blob=new Blob(chunks,{type:recorder.mimeType||mime||'video/webm'});
+      const url=URL.createObjectURL(blob);
+      const ext='webm'; // Always webm for moving video, mp4 download would be frozen
+      console.log('Recorded moving video', blob.size, blob.type);
+      const feed=document.getElementById('feed');
+      if(feed){
+        const div=document.createElement('div');
+        div.style.cssText='background:#111;border:1px solid #222;border-radius:12px;padding:10px;margin-bottom:12px';
+        div.innerHTML='<div style="color:#0f0;font-size:11px;margin-bottom:6px">✓ MOVING VIDEO '+ (blob.size/1024).toFixed(0) +'KB • '+ blob.type +' • '+(isAndroid?'Android vp8 moving':'Laptop vp9 moving')+'</div><video src="'+url+'" controls playsinline autoplay loop style="width:100%;border-radius:8px;background:#000;min-height:200px"></video><div style="margin-top:6px"><a href="'+url+'" download="toandfro-moving-'+Date.now()+'.'+ext+'" style="color:#0af;font-size:12px">⬇ Download MOVING VIDEO '+ext.toUpperCase()+'</a> <span style="color:#888;font-size:10px">- not frozen picture</span></div>';
+        feed.prepend(div);
+        // Auto play to prove it's moving
+        setTimeout(()=>{ const vd=div.querySelector('video'); if(vd) vd.play().catch(()=>{}); },300);
+      }
+      isRec=false;
+      const btn=document.getElementById('recordBtn');
+      if(btn){ btn.style.background='#ff0040'; btn.innerHTML='<div style="width:40%;height:40%;background:#fff;border-radius:50%;margin:auto"></div>'; }
+      const st=document.getElementById('status');
+      if(st) st.textContent='Moving video saved ✓ - tap to record again';
+    };
+    recorder.start(100); // 100ms timeslice = ensures moving frames, not single frozen frame
+    isRec=true;
+    const btn=document.getElementById('recordBtn');
+    if(btn){ btn.style.background='#cc0000'; btn.innerHTML='<div style="width:30%;height:30%;background:#fff;border-radius:3px;margin:auto"></div>'; }
+    const st=document.getElementById('status');
+    if(st) st.textContent='● Recording MOVING video... tap again to stop';
+  };
+
+  window.realStopRecording=function(){
+    if(recorder && isRec){ recorder.stop(); }
+  };
+
+  window.toggleRealRecording=function(){
+    if(isRec) window.realStopRecording(); else window.realStartRecording();
+  };
+
+  // OVERRIDE all old functions
+  window.togglePhoneRecording = window.toggleRealRecording;
+  window.toggleRecordingFixed = window.toggleRealRecording;
+  window.startRecordingFixed = window.realStartRecording;
+  window.stopRecordingFixed = window.realStopRecording;
+  window.toggleRec = window.toggleRealRecording;
+  window.startRec = window.realStartRecording;
+  window.stopRec = window.realStopRecording;
+
+  window.addEventListener('load', ()=>{
+    setTimeout(async()=>{
+      await initRealCamera();
+      const rb=document.getElementById('recordBtn');
+      if(rb){ rb.onclick=window.toggleRealRecording; rb.style.cursor='pointer'; rb.style.display='flex'; }
+      console.log('Camera fixed for moving video');
+    },800);
+  });
+})();
+</script>
+
+</body>
+</html>
